@@ -6,6 +6,8 @@ import vert from "./shaders/vert.glsl";
 
 export const useThreeSetup = (
   containerRef: React.RefObject<HTMLDivElement>,
+  isRecording: boolean,
+  setMediaRecorder: (recorder: MediaRecorder) => void
 ) => {
   useEffect(() => {
     if (!containerRef.current) return;
@@ -72,6 +74,13 @@ export const useThreeSetup = (
     window.addEventListener("resize", onWindowResize);
     window.addEventListener("mousemove", onMouseMove);
 
+    let mediaRecorder: MediaRecorder | null = null;
+    if (isRecording) {
+      const stream = (renderer.domElement as HTMLCanvasElement).captureStream();
+      mediaRecorder = new MediaRecorder(stream);
+      setMediaRecorder(mediaRecorder);
+    }
+
     // アニメーションループを開始
     const animate = () => {
       requestAnimationFrame(animate);
@@ -87,5 +96,5 @@ export const useThreeSetup = (
       window.removeEventListener("mousemove", onMouseMove);
       container.removeChild(renderer.domElement);
     };
-  }, [containerRef]);
+  }, [containerRef, isRecording, setMediaRecorder]);
 };

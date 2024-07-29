@@ -85,5 +85,5 @@ void main(void){
     vec3 orange = vec3(255.0, 130.0, 37.0);
 
     //RGBの値は（r+1.0）/2.0して0.0〜1.0に調整
-    gl_FragColor = vec4(orange * r, 1.0);
+    gl_FragColor = vec4(orange * r / 2.0, 1.0);
 }
